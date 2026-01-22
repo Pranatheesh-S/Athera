@@ -1,28 +1,258 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger'; // Ensure you have ScrollTrigger registered if you want scroll animations, otherwise standard timeline works.
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Register ScrollTrigger (optional, but good for long pages)
 gsap.registerPlugin(ScrollTrigger);
+
+// --- RECAP MODAL COMPONENT ---
+const RecapModal = ({ onClose }) => {
+  const modalRef = useRef(null);
+  const contentRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      // 1. Overlay Fade In
+      gsap.from(modalRef.current, { opacity: 0, duration: 0.5 });
+      
+      // 2. Content Scale Up
+      gsap.from(contentRef.current, { 
+        scale: 0.9, 
+        opacity: 0, 
+        duration: 0.6, 
+        ease: "power3.out",
+        delay: 0.1 
+      });
+
+      // 3. Stagger Items
+      gsap.from(".recap-item", {
+        y: 30,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: "power2.out",
+        delay: 0.3
+      });
+    }, modalRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div ref={modalRef} className="modal-overlay">
+      <div ref={contentRef} className="modal-content">
+        <button onClick={onClose} className="close-btn">
+          × CLOSE REPORT
+        </button>
+        
+        <div className="modal-header">
+          <h2 className="modal-title">PITCH ARENA // <span className="highlight-text">RESULTS</span></h2>
+        </div>
+
+        <div className="winners-grid">
+          {/* 1ST PLACE */}
+          <div className="winner-card first-place recap-item">
+            <div className="medal-icon">🥇 1ST PLACE</div>
+            <img 
+              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop" 
+              alt="First Prize Winner" 
+              className="winner-img"
+            />
+            <div className="winner-info">
+              <h3>PROJECT: NEURO-LINK</h3>
+              <p>Dev: Alex Mercer</p>
+              <span className="prize-pool">🏆 Prize: $5,000</span>
+            </div>
+          </div>
+
+          {/* 2ND PLACE */}
+          <div className="winner-card second-place recap-item">
+            <div className="medal-icon">🥈 2ND PLACE</div>
+            <img 
+              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop" 
+              alt="Second Prize Winner" 
+              className="winner-img"
+            />
+            <div className="winner-info">
+              <h3>PROJECT: CYBER-SAFE</h3>
+              <p>Dev: Sarah Connor</p>
+            </div>
+          </div>
+
+          {/* 3RD PLACE */}
+          <div className="winner-card third-place recap-item">
+            <div className="medal-icon">🥉 3RD PLACE</div>
+            <img 
+              src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop" 
+              alt="Third Prize Winner" 
+              className="winner-img"
+            />
+            <div className="winner-info">
+              <h3>PROJECT: GREEN-GRID</h3>
+              <p>Dev: David Martinez</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="team-section recap-item">
+          <h3 className="section-title">ORGANIZING SQUADRON</h3>
+          <div className="team-img-wrapper">
+            <img 
+              src="/pitch_team.jfif" 
+              onError={(e) => {
+                e.target.onerror = null; 
+                e.target.src = "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop";
+              }}
+              alt="Team Group Photo" 
+              className="team-img"
+            />
+            <div className="tech-decor"></div>
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .modal-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.85);
+          backdrop-filter: blur(8px);
+          z-index: 1000;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 1rem;
+        }
+
+        .modal-content {
+          background: #09090b;
+          border: 1px solid #3f3f46;
+          width: 100%;
+          max-width: 900px;
+          max-height: 90vh;
+          overflow-y: auto;
+          padding: 3rem;
+          position: relative;
+          box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: #18181b; }
+        .modal-content::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+
+        .close-btn {
+          position: absolute;
+          top: 1.5rem;
+          right: 1.5rem;
+          background: transparent;
+          border: 1px solid #dc2626;
+          color: #dc2626;
+          padding: 0.5rem 1rem;
+          cursor: pointer;
+          font-family: 'JetBrains Mono', monospace;
+          font-weight: bold;
+          transition: all 0.3s;
+          z-index: 10;
+        }
+        .close-btn:hover { background: #dc2626; color: white; }
+
+        .modal-header { text-align: center; margin-bottom: 3rem; margin-top: 1rem; }
+        .modal-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; margin: 0; color: white; }
+
+        .winners-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 1.5rem;
+          margin-bottom: 3rem;
+          align-items: end; 
+        }
+
+        .winner-card {
+          background: #18181b;
+          border: 1px solid #27272a;
+          padding: 1rem;
+          text-align: center;
+          position: relative;
+        }
+
+        .winner-img {
+          width: 100%;
+          aspect-ratio: 1/1;
+          object-fit: cover;
+          margin-bottom: 1rem;
+          filter: grayscale(20%);
+          border-bottom: 2px solid #27272a;
+        }
+
+        .winner-info h3 { font-family: 'Orbitron'; font-size: 0.9rem; margin: 0.5rem 0; color: #fff; }
+        .winner-info p { font-family: 'JetBrains Mono'; font-size: 0.75rem; color: #a1a1aa; margin: 0; }
+
+        .first-place { 
+          transform: scale(1.1); 
+          border-color: #eab308; 
+          box-shadow: 0 0 20px rgba(234, 179, 8, 0.15);
+          z-index: 2;
+        }
+        .first-place .medal-icon { color: #eab308; }
+        .first-place .prize-pool { display: block; margin-top: 0.5rem; color: #eab308; font-weight: bold; font-size: 0.8rem; }
+
+        .second-place { border-color: #94a3b8; }
+        .second-place .medal-icon { color: #94a3b8; }
+
+        .third-place { border-color: #b45309; }
+        .third-place .medal-icon { color: #b45309; }
+
+        .medal-icon {
+          font-family: 'Orbitron';
+          font-weight: bold;
+          margin-bottom: 0.5rem;
+          font-size: 0.9rem;
+        }
+
+        .team-section { text-align: center; border-top: 1px solid #27272a; padding-top: 2rem; }
+        .section-title { font-family: 'Orbitron'; color: #fff; margin-bottom: 1.5rem; }
+        .team-img-wrapper { position: relative; width: 100%; height: 300px; overflow: hidden; border: 1px solid #27272a; }
+        .team-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(50%); }
+
+        @media (max-width: 900px) {
+           .winners-grid {
+             grid-template-columns: 1fr;
+             gap: 2rem;
+             align-items: stretch;
+           }
+           .first-place {
+             order: -1;
+             transform: scale(1.02);
+             margin-bottom: 1rem;
+           }
+           .modal-content { padding: 1.5rem; }
+           .modal-title { font-size: 1.8rem; }
+           .close-btn {
+             top: 0.5rem;
+             right: 0.5rem;
+             padding: 0.4rem 0.8rem;
+             font-size: 0.7rem;
+           }
+           .team-img-wrapper { height: 200px; }
+        }
+      `}</style>
+    </div>
+  );
+};
 
 const EventsPage = () => {
   const containerRef = useRef(null);
+  const [showRecap, setShowRecap] = useState(false);
   
-  // Refs for Ongoing Section
   const titleRef = useRef(null);
   const cardRef = useRef(null);
-  
-  // Refs for Past Section
   const pastTitleRef = useRef(null);
   const pastCardRef = useRef(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Fade in container
       gsap.to(containerRef.current, { opacity: 1, duration: 1 });
 
-      // 2. Animate Main Title Stagger
       gsap.from(titleRef.current.querySelectorAll(".event-char"), {
         y: 100,
         opacity: 0,
@@ -32,7 +262,6 @@ const EventsPage = () => {
         delay: 0.2
       });
 
-      // 3. Slide up the FIRST card (Ongoing)
       gsap.from(cardRef.current, {
         y: 50,
         opacity: 0,
@@ -41,7 +270,6 @@ const EventsPage = () => {
         delay: 0.8
       });
 
-      // 4. Animate PAST Section (Simple scroll trigger or delay)
       gsap.from(pastTitleRef.current, {
         y: 50,
         opacity: 0,
@@ -50,7 +278,7 @@ const EventsPage = () => {
         delay: 1.2,
         scrollTrigger: {
             trigger: pastTitleRef.current,
-            start: "top 90%", // Animate when top of element hits 90% of viewport
+            start: "top 90%",
         }
       });
 
@@ -73,18 +301,14 @@ const EventsPage = () => {
 
   return (
     <div ref={containerRef} className="events-container" style={{ opacity: 0 }}>
-      {/* Navigation Back Link */}
       <nav className="events-nav">
         <Link to="/" className="back-link">← BACK TO HOME</Link>
       </nav>
 
       <div className="events-content">
         
-        {/* =========================================
-            SECTION 1: ONGOING EVENTS
-           ========================================= */}
+        {/* SECTION 1: ONGOING EVENTS */}
         <div className="header-section">
-          {/* <p className="overline">Active Protocols</p> */}
           <h1 ref={titleRef} className="page-title">
             {"ONGOING EVENTS".split("").map((char, i) => (
               <span key={i} className="event-char" style={{ display: 'inline-block', minWidth: char === ' ' ? '1rem' : '0' }}>
@@ -94,7 +318,6 @@ const EventsPage = () => {
           </h1>
         </div>
 
-        {/* Featured Event Card: Hack with Magnus */}
         <div ref={cardRef} className="event-card-large">
           <div className="card-image-wrapper">
             <img
@@ -144,40 +367,27 @@ const EventsPage = () => {
                   <span className="btn-text">Register Protocol</span>
                   <span className="btn-decor"></span>
                 </a>
-                
-                <button className="secondary-btn">
-                  <span className="btn-text">Data Packet</span>
-                </button>
               </div>
             </div>
           </div>
         </div>
 
-        {/* =========================================
-            SECTION 2: PAST EVENTS (NEW)
-           ========================================= */}
-        
-        {/* Spacer */}
+        {/* SECTION 2: PAST EVENTS */}
         <div className="section-spacer"></div>
 
         <div className="header-section">
-           {/* Simple title for Past Events (Non-staggered for simplicity, or reuse logic) */}
           <h1 ref={pastTitleRef} className="page-title">
             PAST EVENTS
           </h1>
         </div>
 
-        {/* Past Event Card: Pitch Arena */}
         <div ref={pastCardRef} className="event-card-large past-event-card">
           <div className="card-image-wrapper">
-            {/* Make sure 'pitch.jpg' is in your 'public' folder. 
-                If it is in src, import it at the top and use src={pitchImg} 
-            */}
             <img
               src="/pitch.jpg"
               onError={(e) => {
                 e.target.onerror = null; 
-                e.target.src = "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop"; // Fallback if local image not found
+                e.target.src = "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop"; 
               }}
               alt="Pitch Arena"
               className="card-bg"
@@ -190,7 +400,6 @@ const EventsPage = () => {
             <div className="card-details-bg-pattern"></div>
             <div className="content-inner">
               <div className="top-row">
-                {/* Grey Status Badge for Past Events */}
                 <div className="status-badge status-completed">
                   <span className="solid-dot"></span> Completed
                 </div>
@@ -206,7 +415,7 @@ const EventsPage = () => {
                 </div>
                 <div className="meta-item">
                   <span className="label">LOCATION</span>
-                  <span className="value">MAIN AUDITORIUM</span>
+                  <span className="value">Python Lab,CIT</span>
                 </div>
               </div>
 
@@ -218,32 +427,47 @@ const EventsPage = () => {
                 <button className="secondary-btn disabled-btn" disabled>
                   <span className="btn-text">Registration Closed</span>
                 </button>
-                <button className="secondary-btn">
+                
+                <button 
+                  className="secondary-btn" 
+                  onClick={() => setShowRecap(true)}
+                >
                   <span className="btn-text">View Recap</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
-
       </div>
+
+      {showRecap && <RecapModal onClose={() => setShowRecap(false)} />}
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;500;600&family=JetBrains+Mono:wght@400;700&display=swap');
 
-        /* --- GLOBAL & LAYOUT --- */
-        .events-container {
-          min-height: 100vh;
+        /* --- GLOBAL BACKGROUND SETTING --- */
+        /* Applying the background to BODY ensures it covers the whole page, including scroll bounce */
+        body {
+          margin: 0;
+          padding: 0;
           background-color: #050505;
-          color: #fff;
-          font-family: 'Inter', sans-serif;
-          padding: 3rem;
-          box-sizing: border-box;
           background-image: 
             radial-gradient(circle at 50% 0%, rgba(220, 38, 38, 0.08), transparent 40%),
             linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
           background-size: 100% 100%, 60px 60px, 60px 60px;
+          background-attachment: fixed; /* Keeps background still while scrolling */
+        }
+
+        /* --- LAYOUT --- */
+        .events-container {
+          min-height: 100vh;
+          /* Background now handled by body, but we keep text color here */
+          color: #fff;
+          font-family: 'Inter', sans-serif;
+          padding: 3rem;
+          box-sizing: border-box;
+          overflow-x: hidden;
         }
 
         .events-nav { margin-bottom: 4rem; }
@@ -259,11 +483,8 @@ const EventsPage = () => {
         .back-link:hover { color: #dc2626; }
 
         .header-section { margin-bottom: 4rem; }
-        .section-spacer { height: 6rem; } /* Spacer between sections */
+        .section-spacer { height: 6rem; }
 
-        .overline { color: #dc2626; font-size: 0.8rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1rem; font-weight: bold; font-family: 'JetBrains Mono', monospace; }
-        
-        /* UPDATED PAGE TITLE STYLE */
         .page-title { 
           font-family: 'Orbitron', sans-serif; 
           font-size: 4.5rem; 
@@ -276,7 +497,7 @@ const EventsPage = () => {
           text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
         }
 
-        /* --- FEATURED CARD STYLES --- */
+        /* --- CARD STYLES --- */
         .event-card-large {
           display: grid;
           grid-template-columns: 1.1fr 1fr;
@@ -294,23 +515,11 @@ const EventsPage = () => {
           box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
         }
 
-        /* Styling for Past Event Card to look slightly different/inactive */
-        .past-event-card {
-            border-color: #18181b;
-            opacity: 0.9;
-        }
-        .past-event-card:hover {
-            opacity: 1;
-            border-color: #3f3f46;
-        }
-        .past-event-card .card-bg {
-             filter: grayscale(100%) contrast(1); /* Fully greyscale for past events */
-        }
-        .past-event-card:hover .card-bg {
-             filter: grayscale(80%) contrast(1.1);
-        }
+        .past-event-card { border-color: #18181b; opacity: 0.9; }
+        .past-event-card:hover { opacity: 1; border-color: #3f3f46; }
+        .past-event-card .card-bg { filter: grayscale(100%) contrast(1); }
+        .past-event-card:hover .card-bg { filter: grayscale(80%) contrast(1.1); }
 
-        /* IMAGE SIDE */
         .card-image-wrapper { 
           position: relative; 
           height: 100%; 
@@ -339,7 +548,6 @@ const EventsPage = () => {
           z-index: 1;
         }
 
-        /* CONTENT SIDE */
         .card-details { 
           position: relative;
           padding: 4rem; 
@@ -377,7 +585,6 @@ const EventsPage = () => {
           font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Completed Status Badge Override */
         .status-completed {
             background: rgba(113, 113, 122, 0.1);
             border: 1px solid rgba(113, 113, 122, 0.3);
@@ -453,7 +660,6 @@ const EventsPage = () => {
           max-width: 95%; 
         }
 
-        /* Action Buttons with Cuts */
         .card-actions { display: flex; gap: 1.5rem; align-items: center; }
         
         .primary-btn, .secondary-btn {
@@ -473,68 +679,43 @@ const EventsPage = () => {
           text-align: center;
         }
 
-        .primary-btn {
-          background: #dc2626;
-          color: white;
-        }
-        
-        .primary-btn:hover { 
-          background: #ef4444; 
-          transform: translateY(-2px);
-          box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.4);
-          color: white; 
-        }
+        .primary-btn { background: #dc2626; color: white; }
+        .primary-btn:hover { background: #ef4444; transform: translateY(-2px); box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.4); color: white; }
+        .secondary-btn { background: #18181b; color: #d4d4d8; box-shadow: inset 0 0 0 1px #3f3f46; }
+        .secondary-btn:hover { background: #27272a; color: #fff; box-shadow: inset 0 0 0 1px #fff; }
+        .disabled-btn { cursor: not-allowed; opacity: 0.6; background: #09090b; }
+        .disabled-btn:hover { background: #09090b; box-shadow: inset 0 0 0 1px #3f3f46; color: #d4d4d8; }
 
-        .secondary-btn {
-          background: #18181b;
-          color: #d4d4d8;
-          box-shadow: inset 0 0 0 1px #3f3f46;
-        }
-        
-        .secondary-btn:hover {
-          background: #27272a;
-          color: #fff;
-          box-shadow: inset 0 0 0 1px #fff;
-        }
-        
-        .disabled-btn {
-            cursor: not-allowed;
-            opacity: 0.6;
-            background: #09090b;
-        }
-        .disabled-btn:hover {
-            background: #09090b;
-            box-shadow: inset 0 0 0 1px #3f3f46;
-            color: #d4d4d8;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 960px) {
-          .page-title { font-size: 2.8rem; }
-          
-          .event-card-large { 
-            grid-template-columns: 1fr; 
-            max-width: 500px;
-            margin: 0 auto 4rem auto;
+        /* --- MEDIA QUERIES FOR RESPONSIVENESS --- */
+        @media (max-width: 1024px) {
+          .event-card-large {
+            grid-template-columns: 1fr;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
           }
           
-          .card-image-wrapper { 
-            min-height: 250px; 
+          .card-image-wrapper {
+            min-height: 300px;
+            max-height: 400px;
             border-right: none;
             border-bottom: 1px solid #27272a;
           }
           
           .card-overlay { background: linear-gradient(180deg, transparent, #09090b); }
-          
-          .card-details { padding: 2.5rem 1.5rem; }
-          
-          .event-name { font-size: 2.25rem; }
-          
-          .meta-row { grid-template-columns: 1fr; gap: 1rem; padding-bottom: 1.5rem; margin-bottom: 1.5rem; }
-          
-          .card-actions { flex-direction: column; gap: 1rem; }
-          
-          .primary-btn, .secondary-btn { width: 100%; }
+          .page-title { font-size: 3.5rem; }
+        }
+
+        @media (max-width: 768px) {
+          .events-container { padding: 1.5rem 1rem; }
+          .header-section { margin-bottom: 2rem; }
+          .page-title { font-size: 2.5rem; }
+          .card-details { padding: 2rem 1.5rem; }
+          .event-name { font-size: 2rem; margin-bottom: 1.5rem; }
+          .meta-row { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; }
+          .card-actions { flex-direction: column; width: 100%; gap: 1rem; }
+          .primary-btn, .secondary-btn { width: 100%; padding: 1rem; }
+          .section-spacer { height: 4rem; }
         }
       `}</style>
     </div>
