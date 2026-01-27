@@ -421,13 +421,13 @@ const Athera = () => {
         </div>
         <h1 ref={workshopsTitleRef} className="newses">WORKSHOPS</h1>
         <div ref={diagonal1Ref} className="card-wrapper c1">
-          <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800" alt="Cybernetic Design" className="interactive-card" />
-          <div className="card-meta"><p className="card-label">Workshop 01</p><p className="card-title">CYBERNETIC DESIGN</p></div>
+          <img src="/workshop.jpg" alt="Cybernetic Design" className="interactive-card" />
+          <div className="card-meta"><p className="card-label">Workshop 01</p><p className="card-title">COMPUTER VISION</p></div>
         </div>
-        <div ref={diagonal2Ref} className="card-wrapper c2">
+        {/* <div ref={diagonal2Ref} className="card-wrapper c2">
           <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800" alt="Hardware Hacking" className="interactive-card" />
           <div className="card-meta right"><p className="card-label">Workshop 02</p><p className="card-title">HARDWARE HACKING</p></div>
-        </div>
+        </div> */}
       </section>
 
       <div id="immersive-wrapper" ref={wrapperRef}>

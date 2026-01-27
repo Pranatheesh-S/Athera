@@ -13,8 +13,8 @@ const RecapModal = ({ onClose }) => {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(modalRef.current, { opacity: 0, duration: 0.5 });
-      gsap.from(contentRef.current, { 
-        scale: 0.9, opacity: 0, duration: 0.6, ease: "power3.out", delay: 0.1 
+      gsap.from(contentRef.current, {
+        scale: 0.9, opacity: 0, duration: 0.6, ease: "power3.out", delay: 0.1
       });
       gsap.from(".recap-item", {
         y: 30, opacity: 0, stagger: 0.1, duration: 0.8, ease: "power2.out", delay: 0.3
@@ -27,7 +27,7 @@ const RecapModal = ({ onClose }) => {
     <div ref={modalRef} className="modal-overlay">
       <div ref={contentRef} className="modal-content">
         <button onClick={onClose} className="close-btn">× CLOSE REPORT</button>
-        
+
         <div className="modal-header">
           <h2 className="modal-title">PITCH ARENA // <span className="highlight-text">RESULTS</span></h2>
         </div>
@@ -36,10 +36,10 @@ const RecapModal = ({ onClose }) => {
           {/* 1ST PLACE */}
           <div className="winner-card first-place recap-item">
             <div className="medal-icon">🥇 1ST PLACE</div>
-            <img 
-              src="/pitch_first.jpg" 
+            <img
+              src="/pitch_first.jpg"
               onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/400x500?text=No+Image"; }}
-              alt="First Prize Winner" 
+              alt="First Prize Winner"
               className="winner-img"
             />
             <div className="winner-info">
@@ -52,10 +52,10 @@ const RecapModal = ({ onClose }) => {
           {/* 2ND PLACE */}
           <div className="winner-card second-place recap-item">
             <div className="medal-icon">🥈 2ND PLACE</div>
-            <img 
-              src="/pitch_second.jpg" 
+            <img
+              src="/pitch_second.jpg"
               onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/400x500?text=No+Image"; }}
-              alt="Second Prize Winner" 
+              alt="Second Prize Winner"
               className="winner-img"
             />
             <div className="winner-info">
@@ -67,10 +67,10 @@ const RecapModal = ({ onClose }) => {
           {/* 3RD PLACE */}
           <div className="winner-card third-place recap-item">
             <div className="medal-icon">🥉 3RD PLACE</div>
-            <img 
-              src="/pitch_third.jpg" 
+            <img
+              src="/pitch_third.jpg"
               onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/400x500?text=No+Image"; }}
-              alt="Third Prize Winner" 
+              alt="Third Prize Winner"
               className="winner-img"
             />
             <div className="winner-info">
@@ -83,10 +83,10 @@ const RecapModal = ({ onClose }) => {
         <div className="team-section recap-item">
           <h3 className="section-title">ORGANIZING SQUADRON</h3>
           <div className="team-img-wrapper">
-            <img 
-              src="/pitch_team.jfif" 
+            <img
+              src="/pitch_team.jfif"
               onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/800x400?text=Team+Image"; }}
-              alt="Team Group Photo" 
+              alt="Team Group Photo"
               className="team-img"
             />
             <div className="tech-decor"></div>
@@ -187,26 +187,36 @@ const RecapModal = ({ onClose }) => {
 const EventsPage = () => {
   const containerRef = useRef(null);
   const [showRecap, setShowRecap] = useState(false);
-  
+
   const titleRef = useRef(null);
   const cardRef = useRef(null);
+  const workshopTitleRef = useRef(null);
+  const workshopCardRef = useRef(null);
   const pastTitleRef = useRef(null);
   const pastCardRef = useRef(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.to(containerRef.current, { opacity: 1, duration: 1 });
+      gsap.to(containerRef.current, { opacity: 1, duration: 0.5 });
       gsap.from(titleRef.current.querySelectorAll(".event-char"), {
-        y: 100, opacity: 0, stagger: 0.05, duration: 1, ease: "power4.out", delay: 0.2
+        y: 50, opacity: 0, stagger: 0.02, duration: 0.5, ease: "power2.out"
       });
-      gsap.from(cardRef.current, { y: 50, opacity: 0, duration: 1, ease: "power3.out", delay: 0.8 });
+      gsap.from(cardRef.current, { y: 30, opacity: 0, duration: 0.5, ease: "power2.out", delay: 0.1 });
+      gsap.from(workshopTitleRef.current, {
+        y: 30, opacity: 0, duration: 0.5, ease: "power2.out",
+        scrollTrigger: { trigger: workshopTitleRef.current, start: "top 95%" }
+      });
+      gsap.from(workshopCardRef.current, {
+        y: 30, opacity: 0, duration: 0.5, ease: "power2.out", delay: 0.1,
+        scrollTrigger: { trigger: workshopCardRef.current, start: "top 90%" }
+      });
       gsap.from(pastTitleRef.current, {
-        y: 50, opacity: 0, duration: 1, ease: "power3.out", delay: 1.2,
-        scrollTrigger: { trigger: pastTitleRef.current, start: "top 90%" }
+        y: 30, opacity: 0, duration: 0.5, ease: "power2.out",
+        scrollTrigger: { trigger: pastTitleRef.current, start: "top 95%" }
       });
       gsap.from(pastCardRef.current, {
-        y: 50, opacity: 0, duration: 1, ease: "power3.out", delay: 1.4,
-        scrollTrigger: { trigger: pastCardRef.current, start: "top 85%" }
+        y: 30, opacity: 0, duration: 0.5, ease: "power2.out", delay: 0.1,
+        scrollTrigger: { trigger: pastCardRef.current, start: "top 90%" }
       });
     }, containerRef);
     return () => ctx.revert();
@@ -239,15 +249,48 @@ const EventsPage = () => {
                 <div className="status-badge"><span className="blink-dot"></span> Registration Open</div>
                 <span className="tech-id">ID: MGNS-25</span>
               </div>
-              <h2 className="event-name">HACK WITH<br/><span className="highlight-text">MAGNUS</span></h2>
+              <h2 className="event-name">HACK WITH<br /><span className="highlight-text">MAGNUS</span></h2>
               <div className="meta-row">
-                <div className="meta-item"><span className="label">DATE</span><span className="value">MARCH 15 - 16, 2025</span></div>
-                <div className="meta-item"><span className="label">LOCATION</span><span className="value">HYBRID // TERMINAL A</span></div>
+                <div className="meta-item"><span className="label">DATE</span><span className="value">FEB 2, 2025</span></div>
+                <div className="meta-item"><span className="label">LOCATION</span><span className="value">ON-SPOT</span></div>
               </div>
-              <p className="event-desc">Join the ultimate coding confrontation. 24 hours to build, break, and rebuild. Magnus awaits those ready to challenge the status quo.</p>
+              <p className="event-desc">Join the ultimate coding confrontation. 6 hours to build, break, and rebuild. Magnus awaits those ready to challenge the status quo.</p>
               <div className="card-actions">
                 <a href="https://athera-hackathon.vercel.app/" target="_blank" rel="noopener noreferrer" className="primary-btn">
                   <span className="btn-text">Register Protocol</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="section-spacer"></div>
+
+        <div className="header-section">
+          <h1 ref={workshopTitleRef} className="page-title">UPCOMING WORKSHOPS</h1>
+        </div>
+
+        <div ref={workshopCardRef} className="event-card-large">
+          <div className="card-image-wrapper">
+            <img src="/workshop.jpg" onError={(e) => { e.target.onerror = null; e.target.src = "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2070&auto=format&fit=crop"; }} alt="Upcoming Workshop" className="card-bg" />
+            <div className="card-overlay"></div><div className="tech-decor"></div>
+          </div>
+          <div className="card-details">
+            <div className="card-details-bg-pattern"></div>
+            <div className="content-inner">
+              <div className="top-row">
+                <div className="status-badge"><span className="blink-dot"></span> Registration Open</div>
+                <span className="tech-id">ID: WRK-25</span>
+              </div>
+              <h2 className="event-name">COMPUTER VISION<br /><span className="highlight-text">WITH TINYGRAND</span></h2>
+              <div className="meta-row">
+                <div className="meta-item"><span className="label">DATE</span><span className="value">MARCH 15, 2025</span></div>
+                <div className="meta-item"><span className="label">LOCATION</span><span className="value">MAIN AUDITORIUM</span></div>
+              </div>
+              <p className="event-desc">Dive deep into the world of artificial intelligence and robotics. Hands-on sessions with industry experts to build the future.</p>
+              <div className="card-actions">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGTTrO7dEf27iOqipBzqtBEIqldQZPCtS5q1dKj2Lz5MjJsQ/viewform" className="primary-btn">
+                  <span className="btn-text">Reserve Seat</span>
                 </a>
               </div>
             </div>
@@ -272,7 +315,7 @@ const EventsPage = () => {
                 <div className="status-badge status-completed"><span className="solid-dot"></span> Completed</div>
                 <span className="tech-id">ID: PTCH-26</span>
               </div>
-              <h2 className="event-name">PITCH<br/><span className="highlight-text">ARENA</span></h2>
+              <h2 className="event-name">PITCH<br /><span className="highlight-text">ARENA</span></h2>
               <div className="meta-row">
                 <div className="meta-item"><span className="label">DATE</span><span className="value">JANUARY 07, 2026</span></div>
                 <div className="meta-item"><span className="label">LOCATION</span><span className="value">Python Lab,CIT</span></div>
@@ -361,7 +404,7 @@ const EventsPage = () => {
           .section-spacer { height: 4rem; }
         }
       `}</style>
-    </div>
+    </div >
   );
 };
 
