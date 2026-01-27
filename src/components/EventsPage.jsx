@@ -142,7 +142,7 @@ const EventsPage = () => {
               </div>
               <h2 className="event-name">HACK WITH<br/><span className="highlight-text">MAGNUS</span></h2>
               <div className="meta-row">
-                <div className="meta-item"><span className="label">DATE: </span><span className="value">MARCH 15 - 16, 2025</span></div>
+                <div className="meta-item"><span className="label">DATE: </span><span className="value">FEB 2, 2026</span></div>
                 <div className="meta-item"><span className="label">LOCATION: </span><span className="value">OFFLINE</span></div>
               </div>
               <p className="event-desc">Join the ultimate coding confrontation. 24 hours to build and break AI systems.</p>
@@ -164,7 +164,7 @@ const EventsPage = () => {
             <div className="content-inner">
               <div className="top-row">
                 <div className="status-badge"><span className="blink-dot"></span> Registration Open</div>
-                <span className="tech-id">ID: WRK-CV-01</span>
+                {/* <span className="tech-id">ID: WRK-CV-01</span> */}
               </div>
               <h2 className="event-name">COMPUTER VISION<br/><span className="highlight-text">WITH TINYGRAD</span></h2>
               <div className="meta-row">
@@ -199,7 +199,7 @@ const EventsPage = () => {
             <div className="content-inner">
               <div className="top-row">
                 <div className="status-badge status-completed"><span className="solid-dot"></span> Completed</div>
-                <span className="tech-id">ID: PTCH-26</span>
+                {/* <span className="tech-id">ID: PTCH-26</span> */}
               </div>
               <h2 className="event-name">PITCH<br/><span className="highlight-text">ARENA</span></h2>
               <div className="meta-row">
