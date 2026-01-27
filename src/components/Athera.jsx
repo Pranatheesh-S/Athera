@@ -249,7 +249,7 @@ const Athera = () => {
       </audio>
 
       <video autoPlay muted loop playsInline className="fixed-bg-video">
-        <source src="/athera9.mp4" type="video/mp4" />
+        <source src="/athera9 (1).mp4" type="video/mp4" />
       </video>
 
       <style>{`
