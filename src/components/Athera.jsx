@@ -164,19 +164,8 @@ const Athera = () => {
           scale: 0.9
         });
       }
-
-      if (workshopsTitleRef.current) {
-        gsap.to(workshopsTitleRef.current, {
-          x: -window.innerWidth * 1.5,
-          ease: "none",
-          scrollTrigger: {
-            trigger: "#motion-section",
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          }
-        });
-      }
+      
+      // REMOVED GSAP ANIMATION FOR workshopsTitleRef HERE TO KEEP IT STATIC
 
       // --- 3. IMMERSIVE WORLD LOGIC ---
       const renderWorld = (p) => {
@@ -254,13 +243,36 @@ const Athera = () => {
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@300;900&display=swap');
-
+        :root {
+          color-scheme: dark;
+          background-color: #000;
+        }
         html.lenis { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto; }
         .lenis.lenis-stopped { overflow: hidden; }
 
-        .athera-container { background-color: transparent; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; width: 100%; position: relative; }
-        .fixed-bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; z-index: -1; pointer-events: none; }
+        .athera-container {
+          background-color: transparent !important; 
+          color: #fff !important;
+          position: relative;
+          z-index: 1;
+        }
+        .fixed-bg-video {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0.6; 
+          z-index: -2;
+          pointer-events: none;
+          background-color: #000;
+        }
+        @media (prefers-color-scheme: light) {
+          .athera-container { background-color: #000 !important; }
+          body { background-color: #000 !important; }
+        }
         
         .nav-bar { position: fixed; top: 0; width: 100%; padding: 2.4rem 3rem; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-sizing: border-box; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); }
         .nav-left { position: absolute; left: 3rem; top: 50%; transform: translateY(-50%); }
@@ -273,12 +285,6 @@ const Athera = () => {
         .logo-img { width: 100%; height: 100%; object-fit: cover; }
         .reg-btn { border: 1px solid #dc2626; padding: 0.5rem 1.5rem; font-size: 0.65rem; font-weight: bold; text-transform: uppercase; background: transparent; color: white; cursor: pointer; transition: background 0.3s; }
         .reg-btn:hover { background: #dc2626; }
-        .hackathon-nav-btn { position: relative; padding: 0.5rem 1.5rem; font-size: 0.65rem; font-weight: bold; letter-spacing: 0.3em; text-transform: uppercase; color: #fff; border: 1px solid #dc2626; background: transparent; text-decoration: none; overflow: hidden; cursor: pointer; border-radius: 10px; }
-        .hackathon-nav-btn::before, .hackathon-nav-btn::after { content: attr(data-text); position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; }
-        .hackathon-nav-btn::before { color: #dc2626; transform: translateX(-2px); }
-        .hackathon-nav-btn::after { color: #00ffff; transform: translateX(2px); }
-        .hackathon-nav-btn:hover::before, .hackathon-nav-btn:hover::after { opacity: 1; animation: nav-glitch 0.35s steps(2, end) infinite; }
-        @keyframes nav-glitch { 0% { clip-path: inset(15% 0 80% 0); } 50% { clip-path: inset(70% 0 15% 0); } 100% { clip-path: inset(0 0 0 0); } }
         
         .hero-title { 
             font-family: 'Orbitron', sans-serif; 
@@ -293,21 +299,55 @@ const Athera = () => {
             text-transform: uppercase;
             will-change: opacity;
         }
-
+        .hero-section { background: transparent !important; }
         .hero-sub { color: #dc2626; letter-spacing: 1.5em; font-size: 0.65rem; text-transform: uppercase; margin-top: 1rem; position: relative; z-index: 10; will-change: opacity;}
-        .technical-grid { background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(circle, black 40%, transparent 95%); position: relative; min-height: 200vh; padding-top: 0; padding-bottom: 10rem; overflow: hidden; }
-        .sticky-text { position: sticky; top: 50%; transform: translateY(-50%); margin-left: 5rem; width: 35%; z-index: 30; padding: 2.5rem; }
+        
+        .technical-grid {
+            position: relative;
+            min-height: 150vh;
+            display: flex;
+            align-items: flex-start;
+            padding: 10rem 5rem;
+            background: transparent !important;
+        }
+        .sticky-text {
+            position: sticky;
+            top: 25%;
+            width: 35%;
+            z-index: 30;
+        }
         .vision-main { font-size: 2.25rem; font-weight: 300; line-height: 1.2; }
-        .newses { position: absolute; top: 20vh; right: 5%; text-align: right; font-size: 7rem; font-weight: 900; z-index: 10; line-height: 1; white-space: nowrap; color: #ffffff; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        
+        /* UPDATED .newses STYLE: Static, relative position, scaled font */
+        .newses {
+            position: relative;
+            font-size: 4rem; /* Adjusted for column width */
+            font-weight: 900;
+            line-height: 1;
+            color: #dc2626; 
+            margin-bottom: 0.5rem;
+            z-index: 1;
+        }
+
         .card-wrapper { position: absolute; z-index: 10; width: 350px; }
-        .card-wrapper.c1 { bottom: 0; right: 5%; width: 400px; }
-        .card-wrapper.c2 { bottom: -10vh; left: 45%; z-index: 10; width: 350px; }
-        .interactive-card { width: 100%; border-radius: 4px; filter: grayscale(100%); transition: filter 0.5s ease; box-shadow: 20px 20px 60px rgba(0,0,0,0.5), -5px -5px 20px rgba(255,0,0,0.1); }
+        .card-wrapper.c1 {
+            position: absolute;
+            right: 10%;
+            top: 45%;
+            width: 380px;
+            z-index: 20;
+        }
+        .interactive-card {
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
         .interactive-card:hover { filter: grayscale(0%); }
         .card-meta { margin-top: 1rem; border-left: 2px solid #dc2626; padding-left: 1rem; }
-        .card-meta.right { text-align: right; border-left: none; border-right: 2px solid #dc2626; padding-right: 1rem; }
         .card-label { font-size: 10px; font-weight: bold; color: #dc2626; text-transform: uppercase; }
         .card-title { font-size: 1.25rem; font-weight: bold; }
+        
         #immersive-wrapper { position: relative; width: 100vw; height: 100vh; overflow: hidden; background: transparent; }
         .imm-section { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; visibility: hidden; opacity: 0; will-change: transform; transition: opacity 0.5s ease; }
         .split-layout { display: flex; align-items: center; gap: 4rem; width: 85%; max-width: 1200px; }
@@ -315,10 +355,10 @@ const Athera = () => {
         .imm-h1 { font-size: 3.5rem; text-transform: uppercase; font-weight: 900; margin-bottom: 10px; }
         .imm-tag { background: #ff0000; padding: 6px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; display: inline-block; margin-bottom: 20px; }
         .horizontal-quote { position: absolute; top: 70%; left: 0; font-size: 8vw; white-space: nowrap; font-weight: 900; text-transform: uppercase; opacity: 0; pointer-events: none; z-index: 50; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
         footer { background: #000; padding-top: 10rem; padding-bottom: 2.5rem; position: relative; border-top: 1px solid #18181b; }
         .footer-content { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; }
         .footer-top { display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 5rem; align-items: flex-end; }
-        
         .footer-reveal-text { 
             font-family: 'Orbitron', sans-serif;
             font-size: 8vw; 
@@ -347,7 +387,6 @@ const Athera = () => {
             z-index: 20; 
             will-change: opacity;
         }
-
         .mask span {
             position: absolute;
             left: 0;
@@ -356,15 +395,38 @@ const Athera = () => {
             background: #000; 
             will-change: height;
         }
-
         .m1 { left: -15%; width: 35%; } 
         .m2 { left: 15%;  width: 40%; } 
         .m3 { left: 45%;  width: 40%; }
         .m4 { left: 75%;  width: 35%; }
-
         .mask span:nth-child(1) { bottom: 40%; }
         .mask span:nth-child(2) { bottom: 0%; }
         .mask span:nth-child(3) { bottom: 70%; }
+        
+        @media (max-width: 768px) {
+            .technical-grid {
+                flex-direction: column;
+                min-height: auto;
+                padding: 5rem 2rem;
+            }
+            .sticky-text {
+                position: relative;
+                top: 0;
+                width: 100%;
+                margin-bottom: 3rem;
+            }
+            .newses {
+                font-size: 15vw;
+                margin-bottom: 1rem;
+            }
+            .card-wrapper.c1 {
+                position: relative;
+                right: 0;
+                top: 0;
+                width: 100%;
+                transform: none !important;
+            }
+        }
       `}</style>
 
       <section className="hero-section" style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
@@ -374,17 +436,10 @@ const Athera = () => {
               <img src={logoImg} alt="Athera Logo" className="logo-img" />
             </div>
           </div>
-
-          {/* --- UPDATED NAVIGATION CENTER --- */}
           <div className="nav-center">
-            {/* Clicking Events now redirects to the /events route */}
             <Link to="/events">Events</Link>
             <a onClick={(e) => { e.preventDefault(); scrollToSection('#footer'); }}>About Us</a>
           </div>
-
-          {/* <div className="nav-right">
-            <a href="https://athera-hackathon.vercel.app/" className="hackathon-nav-btn" data-text="HACKATHON">HACKATHON</a>
-          </div> */}
         </nav>
 
         <h1 className="hero-title">ATHERA</h1>
@@ -402,32 +457,40 @@ const Athera = () => {
       </section>
 
       <section id="motion-section" className="technical-grid">
+        
+        {/* Left Side: Sticky Information */}
         <div className="sticky-text">
+          {/* MOVED WORKSHOPS TITLE INSIDE HERE */}
+          <h1 ref={workshopsTitleRef} className="newses">WORKSHOPS</h1>
+
+          {/* Existing Small Label */}
+          <span>WORKSHOP</span>
+          
           <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ width: '8px', height: '8px', background: '#dc2626', borderRadius: '50%', display: 'inline-block' }}></span>
             <span style={{ fontSize: '0.7rem', color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Mission Protocol</span>
           </div>
           <p className="vision-main">We don't just host events. We engineer <span style={{ fontWeight: 900, fontStyle: 'italic', color: '#dc2626' }}>movements.</span></p>
-          <p style={{ marginTop: '2rem', fontSize: '1rem', color: '#a1a1aa', lineHeight: '1.6', maxWidth: '100%' }}>Athera is the convergence point for minds that refuse to settle for the present.</p>
-          <div style={{ marginTop: '2.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <button
-              className="reg-btn"
-              style={{ padding: '0.75rem 2rem', fontSize: '0.75rem' }}
-              onClick={() => scrollToSection('#immersive-wrapper')}
-            >
+          <p style={{ marginTop: '2rem', fontSize: '1rem', color: '#a1a1aa', lineHeight: '1.6', maxWidth: '100%' }}>
+            Athera is the convergence point for minds that refuse to settle for the present.
+          </p>
+          <div style={{ marginTop: '2.5rem' }}>
+            <button className="reg-btn" style={{ padding: '0.75rem 2rem' }} onClick={() => scrollToSection('#immersive-wrapper')}>
               Explore Our Vision
             </button>
           </div>
         </div>
-        <h1 ref={workshopsTitleRef} className="newses">WORKSHOPS</h1>
+
+        {/* The Workshop Card */}
         <div ref={diagonal1Ref} className="card-wrapper c1">
-          <img src="/workshop.jpg" alt="Cybernetic Design" className="interactive-card" />
-          <div className="card-meta"><p className="card-label">Workshop 01</p><p className="card-title">COMPUTER VISION</p></div>
+          <div className="interactive-card-container">
+             <img src="/workshop.jpg" alt="Computer Vision" className="interactive-card" />
+             <div className="card-meta">
+               <p className="card-label">Workshop 01</p>
+               <p className="card-title">COMPUTER VISION</p>
+             </div>
+          </div>
         </div>
-        {/* <div ref={diagonal2Ref} className="card-wrapper c2">
-          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800" alt="Hardware Hacking" className="interactive-card" />
-          <div className="card-meta right"><p className="card-label">Workshop 02</p><p className="card-title">HARDWARE HACKING</p></div>
-        </div> */}
       </section>
 
       <div id="immersive-wrapper" ref={wrapperRef}>
@@ -456,11 +519,7 @@ const Athera = () => {
               <p style={{ color: '#71717a', fontSize: '0.85rem', lineHeight: 1.6 }}>AI & Technology Hub for Enhanced Research and Analytics</p>
             </div>
             <div className="footer-links">
-              {/* <h4>About ATHERA</h4> */}
-              <ul>
-                {/* <li><a href="#">About the Club</a></li>
-                <li><a href="#">Vision & Mission</a></li> */}
-              </ul>
+              <ul></ul>
             </div>
           </div>
           <div className="footer-reveal-text">ATHERA</div>
