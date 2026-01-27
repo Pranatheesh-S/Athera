@@ -42,18 +42,15 @@ const RecapModal = ({ onClose }) => {
         <div className="winners-grid">
           <div className="winner-card first-place recap-item">
             <div className="medal-icon">🥇 1ST PLACE</div>
-            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop" alt="Winner" className="winner-img"/>
-            <div className="winner-info"><h3>PROJECT: NEURO-LINK</h3><p>Dev: Alex Mercer</p><span className="prize-pool">🏆 Prize: $5,000</span></div>
+            <img src="/pitch_first.jpg" alt="Winner" className="winner-img"/>
           </div>
           <div className="winner-card second-place recap-item">
             <div className="medal-icon">🥈 2ND PLACE</div>
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop" alt="Winner" className="winner-img"/>
-            <div className="winner-info"><h3>PROJECT: CYBER-SAFE</h3><p>Dev: Sarah Connor</p></div>
+            <img src="/pitch_second.jpg" alt="Winner" className="winner-img"/>
           </div>
           <div className="winner-card third-place recap-item">
             <div className="medal-icon">🥉 3RD PLACE</div>
-            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop" alt="Winner" className="winner-img"/>
-            <div className="winner-info"><h3>PROJECT: GREEN-GRID</h3><p>Dev: David Martinez</p></div>
+            <img src="/pitch_third.jpg" alt="Winner" className="winner-img"/>
           </div>
         </div>
         <div className="team-section recap-item">
@@ -71,10 +68,16 @@ const RecapModal = ({ onClose }) => {
         .modal-title { font-family: 'Orbitron'; font-size: 2.5rem; color: white; text-align: center; margin-bottom: 2rem; }
         .winners-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem; align-items: end; }
         .winner-card { background: #18181b; border: 1px solid #27272a; padding: 1rem; text-align: center; }
-        .winner-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-bottom: 2px solid #27272a; }
+        
+        /* UPDATED: Changed object-fit to contain so winner images are fully visible */
+        .winner-img { width: 100%; aspect-ratio: 1/1; object-fit: contain; background: #000; border-bottom: 2px solid #27272a; }
+        
         .first-place { transform: scale(1.1); border-color: #eab308; }
-        .team-img-wrapper { position: relative; width: 100%; height: 300px; overflow: hidden; border: 1px solid #27272a; }
-        .team-img { width: 100%; height: 100%; object-fit: cover; }
+        .team-img-wrapper { position: relative; width: 100%; height: 300px; overflow: hidden; border: 1px solid #27272a; background: #000; }
+        
+        /* UPDATED: Changed object-fit to contain for team image */
+        .team-img { width: 100%; height: 100%; object-fit: contain; }
+        
         @media (max-width: 900px) { .winners-grid { grid-template-columns: 1fr; } .first-place { transform: scale(1); order: -1; } }
       `}</style>
     </div>
@@ -138,7 +141,6 @@ const EventsPage = () => {
             <div className="content-inner">
               <div className="top-row">
                 <div className="status-badge"><span className="blink-dot"></span> Registration Open</div>
-                <span className="tech-id">ID: MGNS-25</span>
               </div>
               <h2 className="event-name">HACK WITH<br/><span className="highlight-text">MAGNUS</span></h2>
               <div className="meta-row">
@@ -164,7 +166,6 @@ const EventsPage = () => {
             <div className="content-inner">
               <div className="top-row">
                 <div className="status-badge"><span className="blink-dot"></span> Registration Open</div>
-                {/* <span className="tech-id">ID: WRK-CV-01</span> */}
               </div>
               <h2 className="event-name">COMPUTER VISION<br/><span className="highlight-text">WITH TINYGRAD</span></h2>
               <div className="meta-row">
@@ -176,7 +177,6 @@ const EventsPage = () => {
               <p className="event-desc">Build vision models from scratch using TinyGrad and explore the mechanics behind CNN architectures.</p>
               <div className="card-actions">
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSdHIt1tBmDNejBAXR4w5jRTZ6ZS6B4QB68NpD1xupvTINS_fQ/viewform" target="_blank" rel="noopener noreferrer" className="primary-btn">Reserve Seat</a>
-                {/* <button className="secondary-btn">View Syllabus</button> */}
               </div>
             </div>
           </div>
@@ -199,7 +199,6 @@ const EventsPage = () => {
             <div className="content-inner">
               <div className="top-row">
                 <div className="status-badge status-completed"><span className="solid-dot"></span> Completed</div>
-                {/* <span className="tech-id">ID: PTCH-26</span> */}
               </div>
               <h2 className="event-name">PITCH<br/><span className="highlight-text">ARENA</span></h2>
               <div className="meta-row">
@@ -208,7 +207,6 @@ const EventsPage = () => {
               </div>
               <p className="event-desc">A battleground for visionaries to showcase their blueprints for the new world order.</p>
               <div className="card-actions">
-                <button className="secondary-btn disabled-btn" disabled>Registration Closed</button>
                 <button className="secondary-btn" onClick={() => setShowRecap(true)}>View Recap</button>
               </div>
             </div>
@@ -227,10 +225,15 @@ const EventsPage = () => {
         .back-link:hover { color: #dc2626; }
         .page-title { font-family: 'Orbitron'; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; margin-bottom: 4rem; }
         .event-card-large { display: grid; grid-template-columns: 1.2fr 1fr; border: 1px solid #27272a; background: #09090b; width: 100%; max-width: 1600px; margin-bottom: 5rem; border-left: 4px solid #dc2626; }
-        .card-image-wrapper { position: relative; min-height: 500px; overflow: hidden; }
-        .card-bg { width: 100%; height: 100%; object-fit: cover; filter: grayscale(80%); transition: 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+        
+        /* UPDATED: Added centering and background for non-filling images */
+        .card-image-wrapper { position: relative; min-height: 500px; overflow: hidden; background-color: #000; display: flex; align-items: center; justify-content: center; }
+        
+        /* UPDATED: Changed object-fit to 'contain' to show full image */
+        .card-bg { width: 100%; height: 100%; object-fit: contain; filter: grayscale(80%); transition: 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+        
         .event-card-large:hover .card-bg { transform: scale(1.03); filter: grayscale(0%); }
-        .card-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9,9,11,0.2), #09090b); }
+        .card-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9,9,11,0.2), #09090b); pointer-events: none; }
         .card-details { padding: 4rem; position: relative; }
         .event-name { font-family: 'Orbitron'; font-size: 3.5rem; line-height: 0.95; margin-bottom: 2rem; }
         .highlight-text { color: #dc2626; }
@@ -242,7 +245,10 @@ const EventsPage = () => {
         .status-badge { display: flex; align-items: center; gap: 8px; color: #4ade80; font-family: 'JetBrains Mono'; font-size: 0.7rem; }
         .blink-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: blink 2s infinite; }
         @keyframes blink { 50% { opacity: 0.4; } }
-        .workshop-card-img { object-position: center 20%; }
+        
+        /* UPDATED: Removed specific positioning since 'contain' handles it */
+        .workshop-card-img { } 
+        
         @media (max-width: 1100px) { .event-card-large { grid-template-columns: 1fr; } .card-image-wrapper { min-height: 300px; } .card-overlay { background: linear-gradient(0deg, #09090b 10%, transparent 100%); } }
         @media (max-width: 768px) { .events-container { padding: 2rem 1.5rem; } .page-title { font-size: 2.8rem; } .card-details { padding: 2rem; } .event-name { font-size: 2.2rem; } .meta-row { grid-template-columns: 1fr; } .card-actions { flex-direction: column; width: 100%; } }
       `}</style>
