@@ -251,7 +251,7 @@ const EventsPage = () => {
               </div>
               <h2 className="event-name">HACK WITH<br /><span className="highlight-text">MAGNUS</span></h2>
               <div className="meta-row">
-                <div className="meta-item"><span className="label">DATE</span><span className="value">FEB 2, 2025</span></div>
+                <div className="meta-item"><span className="label">DATE</span><span className="value">FEB 2, 2026</span></div>
                 <div className="meta-item"><span className="label">LOCATION</span><span className="value">ON-SPOT</span></div>
               </div>
               <p className="event-desc">Join the ultimate coding confrontation. 6 hours to build, break, and rebuild. Magnus awaits those ready to challenge the status quo.</p>
@@ -284,7 +284,7 @@ const EventsPage = () => {
               </div>
               <h2 className="event-name">COMPUTER VISION<br /><span className="highlight-text">WITH TINYGRAND</span></h2>
               <div className="meta-row">
-                <div className="meta-item"><span className="label">DATE</span><span className="value">MARCH 15, 2025</span></div>
+                <div className="meta-item"><span className="label">DATE</span><span className="value">FEB 2, 2026</span></div>
                 <div className="meta-item"><span className="label">LOCATION</span><span className="value">MAIN AUDITORIUM</span></div>
               </div>
               <p className="event-desc">Dive deep into the world of artificial intelligence and robotics. Hands-on sessions with industry experts to build the future.</p>

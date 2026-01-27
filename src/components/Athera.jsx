@@ -249,7 +249,7 @@ const Athera = () => {
       </audio>
 
       <video autoPlay muted loop playsInline className="fixed-bg-video">
-        <source src="/athera.mp4" type="video/mp4" />
+        <source src="/athera9.mp4" type="video/mp4" />
       </video>
 
       <style>{`
@@ -382,9 +382,9 @@ const Athera = () => {
             <a onClick={(e) => { e.preventDefault(); scrollToSection('#footer'); }}>About Us</a>
           </div>
 
-          <div className="nav-right">
+          {/* <div className="nav-right">
             <a href="https://athera-hackathon.vercel.app/" className="hackathon-nav-btn" data-text="HACKATHON">HACKATHON</a>
-          </div>
+          </div> */}
         </nav>
 
         <h1 className="hero-title">ATHERA</h1>
