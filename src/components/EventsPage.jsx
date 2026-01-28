@@ -147,7 +147,7 @@ const EventsPage = () => {
                 <div className="meta-item"><span className="label">DATE: </span><span className="value">FEB 2, 2026</span></div>
                 <div className="meta-item"><span className="label">LOCATION: </span><span className="value">OFFLINE</span></div>
               </div>
-              <p className="event-desc">Join the ultimate coding confrontation. 24 hours to build and break AI systems.</p>
+              <p className="event-desc">Join the ultimate coding confrontation. 6 hours to build and break AI systems.</p>
               <div className="card-actions">
                 <a href="https://athera-hackathon.vercel.app/" target="_blank" rel="noopener noreferrer" className="primary-btn">Register Protocol</a>
               </div>
