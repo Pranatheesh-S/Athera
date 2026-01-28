@@ -5,6 +5,162 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// --- EVIDENCE BOARD COMPONENT (New Addition) ---
+const EvidenceBoard = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const evidenceItems = [
+    { id: 'p1', top: '10%', left: '10%', rot: '-5deg', label: '', img: '/arena.jpg' },
+    { id: 'p2', top: '5%', left: '40%', rot: '3deg', label: '', img: '/arena1.jpg' },
+    { id: 'p3', top: '15%', left: '75%', rot: '-8deg', label: '', img: '/arena2.jpg' },
+    { id: 'p4', top: '40%', left: '25%', rot: '6deg', label: '', img: '/arena3.jpg' },
+    { id: 'p5', top: '35%', left: '55%', rot: '-2deg', label: '', img: '/arena4.jpg' },
+    { id: 'p6', top: '70%', left: '15%', rot: '4deg', label: '', img: '/arena5.jpg' },
+    { id: 'p7', top: '65%', left: '45%', rot: '-4deg', label: '', img: '/arena6.jpg' },
+    { id: 'p8', top: '60%', left: '80%', rot: '2deg', label: '', img: '/arena7.jpg' },
+  ];
+
+  return (
+    <div className="evidence-section recap-item">
+      <h3 className="section-title">EVENT RECAP :</h3>
+      <div className="evidence-board-wrapper">
+        <div className="evidence-board">
+          {/* Red Strings SVG Layer */}
+          <svg className="connections">
+            <line x1="16%" y1="20%" x2="46%" y2="15%" />
+            <line x1="46%" y1="15%" x2="81%" y2="25%" />
+            <line x1="46%" y1="15%" x2="61%" y2="45%" />
+            <line x1="31%" y1="50%" x2="16%" y2="20%" />
+            <line x1="31%" y1="50%" x2="51%" y2="75%" />
+            <line x1="51%" y1="75%" x2="61%" y2="45%" />
+            <line x1="61%" y1="45%" x2="86%" y2="70%" />
+            <line x1="21%" y1="80%" x2="51%" y2="75%" />
+          </svg>
+
+          {/* Photos */}
+          {evidenceItems.map((item) => (
+            <div
+              key={item.id}
+              className="evidence-photo"
+              style={{ top: item.top, left: item.left, transform: `rotate(${item.rot})` }}
+              onClick={() => setSelectedImage(item)}
+            >
+              <img src={item.img} alt={item.label} />
+              <div className="caption">{item.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Lightbox Modal (Scoped to Evidence Board) */}
+        {selectedImage && (
+          <div className="evidence-modal" onClick={() => setSelectedImage(null)}>
+            <span className="evidence-close">&times;</span>
+            <img className="evidence-modal-content" src={selectedImage.img} alt="Evidence" onClick={(e) => e.stopPropagation()} />
+            <div className="evidence-caption">{selectedImage.label}</div>
+          </div>
+        )}
+      </div>
+
+      <style>{`
+        .evidence-section { margin-top: 4rem; width: 100%; }
+        .evidence-board-wrapper {
+          position: relative;
+          width: 100%;
+          height: 600px; /* Fixed height for the scrollable container */
+          background-color: #111; /* Slightly lighter than pure black for contrast */
+          border: 1px solid #3f3f46;
+          box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.7);
+          overflow: hidden;
+          margin-top: 1rem;
+        }
+
+        .evidence-board {
+          position: relative;
+          width: 100%;
+          height: 100%;
+        }
+
+        .connections {
+          position: absolute;
+          top: 0; left: 0; width: 100%; height: 100%;
+          z-index: 1; pointer-events: none;
+        }
+
+        .connections line {
+          stroke: #d9381e; stroke-width: 3; stroke-opacity: 0.8;
+          filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+        }
+
+        .evidence-photo {
+          position: absolute;
+          width: 140px; /* Scaled down slightly for the modal container */
+          background: #fff;
+          padding: 8px 8px 24px 8px; /* Polaroid padding */
+          box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+          transition: transform 0.2s, z-index 0s;
+          cursor: pointer;
+          z-index: 2;
+        }
+
+        .evidence-photo:hover {
+          transform: scale(1.1) !important;
+          z-index: 10;
+          box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.6);
+        }
+
+        .evidence-photo img {
+          width: 100%; height: auto; display: block;
+          filter: sepia(30%) contrast(1.2);
+        }
+
+        /* The Pin */
+        .evidence-photo::after {
+          content: ''; position: absolute;
+          top: -5px; left: 50%; transform: translateX(-50%);
+          width: 12px; height: 12px; border-radius: 50%;
+          background: radial-gradient(circle at 30% 30%, #ff4d4d, #990000);
+          box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .caption {
+          text-align: center; margin-top: 8px; font-size: 0.7rem;
+          font-weight: bold; color: #333; font-family: 'Courier New', monospace;
+        }
+
+        /* Lightbox Styles */
+        .evidence-modal {
+          position: fixed; z-index: 2000; /* Higher than RecapModal */
+          left: 0; top: 0; width: 100%; height: 100%;
+          background-color: rgba(0, 0, 0, 0.95);
+          display: flex; flex-direction: column;
+          justify-content: center; align-items: center;
+        }
+
+        .evidence-modal-content {
+          max-width: 80%; max-height: 80%;
+          border: 10px solid #fff;
+          box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+        }
+
+        .evidence-close {
+          position: absolute; top: 20px; right: 35px;
+          color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer;
+        }
+
+        .evidence-caption {
+          color: #fff; margin-top: 15px; font-size: 1.5rem;
+          font-family: 'Courier New', monospace;
+        }
+        
+        @media (max-width: 768px) {
+          .evidence-board-wrapper { height: 400px; }
+          .evidence-photo { width: 90px; padding: 4px 4px 16px 4px; }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 // --- RECAP MODAL COMPONENT ---
 const RecapModal = ({ onClose }) => {
   const modalRef = useRef(null);
@@ -13,12 +169,12 @@ const RecapModal = ({ onClose }) => {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(modalRef.current, { opacity: 0, duration: 0.5 });
-      gsap.from(contentRef.current, { 
-        scale: 0.9, 
-        opacity: 0, 
-        duration: 0.6, 
+      gsap.from(contentRef.current, {
+        scale: 0.9,
+        opacity: 0,
+        duration: 0.6,
         ease: "power3.out",
-        delay: 0.1 
+        delay: 0.1
       });
       gsap.from(".recap-item", {
         y: 30,
@@ -37,45 +193,49 @@ const RecapModal = ({ onClose }) => {
       <div ref={contentRef} className="modal-content">
         <button onClick={onClose} className="close-btn">× CLOSE REPORT</button>
         <div className="modal-header">
-          <h2 className="modal-title">PITCH ARENA // <span className="highlight-text">RESULTS</span></h2>
+          <h2 className="modal-title">PITCH ARENA  <span className="highlight-text">RESULTS</span></h2>
         </div>
         <div className="winners-grid">
           <div className="winner-card first-place recap-item">
             <div className="medal-icon">🥇 1ST PLACE</div>
-            <img src="/pitch_first.jpg" alt="Winner" className="winner-img"/>
+            <img src="/pitch_first.jpg" alt="Winner" className="winner-img" />
           </div>
           <div className="winner-card second-place recap-item">
             <div className="medal-icon">🥈 2ND PLACE</div>
-            <img src="/pitch_second.jpg" alt="Winner" className="winner-img"/>
+            <img src="/pitch_second.jpg" alt="Winner" className="winner-img" />
           </div>
           <div className="winner-card third-place recap-item">
             <div className="medal-icon">🥉 3RD PLACE</div>
-            <img src="/pitch_third.jpg" alt="Winner" className="winner-img"/>
+            <img src="/pitch_third.jpg" alt="Winner" className="winner-img" />
           </div>
         </div>
+
         <div className="team-section recap-item">
-          <h3 className="section-title">ORGANIZING SQUADRON</h3>
+          <h3 className="section-title">ORGANIZING SQUADRON :</h3>
           <div className="team-img-wrapper">
-            <img src="/pitch_team.jfif" onError={(e) => {e.target.src = "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop";}} alt="Team" className="team-img"/>
+            <img src="/pitch_team.jfif" onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop"; }} alt="Team" className="team-img" />
             <div className="tech-decor"></div>
           </div>
         </div>
+
+        {/* MERGED: Evidence Board is placed here, below Organizing Squadron */}
+        <EvidenceBoard />
+
       </div>
       <style>{`
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 1000; display: flex; justify-content: center; align-items: center; padding: 1rem; }
         .modal-content { background: #09090b; border: 1px solid #3f3f46; width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto; padding: 3rem; position: relative; }
         .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: transparent; border: 1px solid #dc2626; color: #dc2626; padding: 0.5rem 1rem; cursor: pointer; font-family: 'JetBrains Mono'; }
         .modal-title { font-family: 'Orbitron'; font-size: 2.5rem; color: white; text-align: center; margin-bottom: 2rem; }
+        .section-title { font-family: 'Orbitron'; font-size: 1.5rem; color: white; margin-bottom: 1rem; margin-top: 1rem; }
         .winners-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem; align-items: end; }
         .winner-card { background: #18181b; border: 1px solid #27272a; padding: 1rem; text-align: center; }
         
-        /* UPDATED: Changed object-fit to contain so winner images are fully visible */
         .winner-img { width: 100%; aspect-ratio: 1/1; object-fit: contain; background: #000; border-bottom: 2px solid #27272a; }
         
         .first-place { transform: scale(1.1); border-color: #eab308; }
         .team-img-wrapper { position: relative; width: 100%; height: 300px; overflow: hidden; border: 1px solid #27272a; background: #000; }
         
-        /* UPDATED: Changed object-fit to contain for team image */
         .team-img { width: 100%; height: 100%; object-fit: contain; }
         
         @media (max-width: 900px) { .winners-grid { grid-template-columns: 1fr; } .first-place { transform: scale(1); order: -1; } }
@@ -87,7 +247,7 @@ const RecapModal = ({ onClose }) => {
 const EventsPage = () => {
   const containerRef = useRef(null);
   const [showRecap, setShowRecap] = useState(false);
-  
+
   const titleRef = useRef(null);
   const cardRef = useRef(null);
   const workshopCardRef = useRef(null);
@@ -142,7 +302,7 @@ const EventsPage = () => {
               <div className="top-row">
                 <div className="status-badge"><span className="blink-dot"></span> Registration Open</div>
               </div>
-              <h2 className="event-name">HACK WITH<br/><span className="highlight-text">MAGNUS</span></h2>
+              <h2 className="event-name">HACK WITH<br /><span className="highlight-text">MAGNUS</span></h2>
               <div className="meta-row">
                 <div className="meta-item"><span className="label">DATE: </span><span className="value">FEB 2, 2026</span></div>
                 <div className="meta-item"><span className="label">LOCATION: </span><span className="value">OFFLINE</span></div>
@@ -167,7 +327,7 @@ const EventsPage = () => {
               <div className="top-row">
                 <div className="status-badge"><span className="blink-dot"></span> Registration Open</div>
               </div>
-              <h2 className="event-name">COMPUTER VISION<br/><span className="highlight-text">WITH TINYGRAD</span></h2>
+              <h2 className="event-name">COMPUTER VISION<br /><span className="highlight-text">WITH TINYGRAD</span></h2>
               <div className="meta-row">
                 <div className="meta-item"><span className="label">DATE: </span><span className="value">FEB 02, 2026</span></div>
                 <div className="meta-item"><span className="label">LOCATION: </span><span className="value">CIT, CHENNAI</span></div>
@@ -191,7 +351,7 @@ const EventsPage = () => {
         {/* Past Event Card */}
         <div ref={pastCardRef} className="event-card-large past-event-card">
           <div className="card-image-wrapper">
-            <img src="/pitch.jpg" onError={(e) => {e.target.src = "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop";}} alt="Pitch Arena" className="card-bg" />
+            <img src="/pitch.jpg" onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop"; }} alt="Pitch Arena" className="card-bg" />
             <div className="card-overlay"></div>
           </div>
           <div className="card-details">
@@ -200,7 +360,7 @@ const EventsPage = () => {
               <div className="top-row">
                 <div className="status-badge status-completed"><span className="solid-dot"></span> Completed</div>
               </div>
-              <h2 className="event-name">PITCH<br/><span className="highlight-text">ARENA</span></h2>
+              <h2 className="event-name">PITCH<br /><span className="highlight-text">ARENA</span></h2>
               <div className="meta-row">
                 <div className="meta-item"><span className="label">DATE: </span><span className="value">JANUARY 07, 2026</span></div>
                 <div className="meta-item"><span className="label">LOCATION: </span><span className="value">Python Lab, CIT</span></div>
@@ -246,7 +406,6 @@ const EventsPage = () => {
         .blink-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: blink 2s infinite; }
         @keyframes blink { 50% { opacity: 0.4; } }
         
-        /* UPDATED: Removed specific positioning since 'contain' handles it */
         .workshop-card-img { } 
         
         @media (max-width: 1100px) { .event-card-large { grid-template-columns: 1fr; } .card-image-wrapper { min-height: 300px; } .card-overlay { background: linear-gradient(0deg, #09090b 10%, transparent 100%); } }
